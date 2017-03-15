@@ -17,3 +17,18 @@ def check_perm_3(str1, str2)
   end
   comparison == 0
 end
+
+def palindrome_permutation(str)
+  odd = 0
+  counts = Hash.new(0)
+  str.chars.each do |letter|
+    next if letter == ' '
+    counts[letter] += 1
+    if counts[letter].odd?
+      odd += 1
+    else
+      odd -= 1
+    end
+  end
+  odd == str.length % 2
+end
