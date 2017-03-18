@@ -32,3 +32,31 @@ def palindrome_permutation(str)
   end
   odd == str.length % 2
 end
+
+def rotate_matrix(matrix)
+  # in place, translated from java solution
+  raise "cannot rotate!" if matrix.empty? || matrix[0].length != matrix.length
+  mid = matrix.length / 2
+  mid.times do |layer|
+    first = layer
+    last = matrix.length - 1 - layer
+    (first...last).each do |i|
+      offset = i - first
+      top = matrix[first][i]
+
+      # left -> top
+      matrix[first][i] = matrix[last - offset][first]
+
+      # bottom -> left
+      matrix[last - offset][first] = matrix[last][last - offset]
+
+      # right -> bottom
+      matrix[last][last - offset] = matrix[i][last]
+
+      # bottom -> right
+      matrix[i][last] = top
+    end
+
+  end
+  matrix
+end
