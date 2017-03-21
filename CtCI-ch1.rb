@@ -1,3 +1,5 @@
+require 'set'
+
 def check_perm_2(str1, str2)
   return false if str1.length != str2.length
   counts = Hash.new(0)
@@ -58,5 +60,72 @@ def rotate_matrix(matrix)
     end
 
   end
+  matrix
+end
+
+def zero_matrix_v1(matrix)
+  rows_to_zero = Set.new
+  cols_to_zero = Set.new
+
+  matrix.each_index do |row|
+    matrix[0].each_index do |col|
+      if matrix[row][col] == 0
+        rows_to_zero.add(row)
+        cols_to_zero.add(col)
+      end
+    end
+  end
+
+  rows_to_zero.each do |row|
+    matrix[0].each_index do |col|
+      matrix[row][col] = 0
+    end
+  end
+
+  cols_to_zero.each do |col|
+    matrix.each_index do |row|
+      matrix[row][col] = 0
+    end
+  end
+  matrix
+end
+
+def zero_matrix_v2(matrix)
+  zero_first_row = false
+  zero_first_col = false
+
+  matrix.each_index do |row|
+    matrix[0].each_index do |col|
+      if row == 0 && matrix[row][col] == 0
+        zero_first_row = true
+      elsif col == 0 && matrix[row][col] == 0
+        zero_first_col = true
+      elsif matrix[row][col] == 0
+        matrix[0][col] = 0
+        matrix[row][0] = 0
+      end
+    end
+  end
+
+  (1...matrix.length).each do |row|
+    (1...matrix[0].length).each do |col|
+      if matrix[0][col] == 0 || matrix[row][0] == 0
+        matrix[row][col] = 0
+      end
+    end
+  end
+
+  if zero_first_row
+    matrix[0].each_index do |col|
+      matrix[0][col] = 0
+    end
+  end
+
+  if zero_first_col
+    matrix.each_index do |row|
+      matrix[row][0] = 0
+    end
+  end
+
   matrix
 end
