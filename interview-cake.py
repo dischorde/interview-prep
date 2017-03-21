@@ -21,6 +21,28 @@
 
     return max_profit
 
+
+# Question 4
+def merge_timeset(timeset):
+    ordered = sorted(timeset)
+    merged_times = [ordered[0]]
+    for i in xrange(1, len(timeset)):
+        current = merged_times[len(merged_times) - 1]
+        merge = try_merge(current, ordered[i])
+        if merge != None:
+            merged_times.pop()
+            merged_times.append(merge)
+        else:
+            merged_times.append(ordered[i])
+    return merged_times
+
+def try_merge(t1, t2):
+    start1, end1 = t1
+    start2, end2 = t2
+    if start1 <= start2 <= end1 or start2 <= start1 <= end2:
+        return (min(start1, start2), max(end1, end2))
+    return None
+
 # Question 30
 
   def has_palindrome_permutation(the_string):
