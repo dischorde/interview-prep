@@ -58,3 +58,41 @@ let e7 = new Edge(v0, v4);
 let e8 = new Edge(v3, v2);
 
 // graph problems
+const routeBetween = (n1, n2) => {
+  // using bidirectional search
+  let visited1 = new Set();
+  let visited2 = new Set();
+  let queue1 = [n1];
+  let queue2 = [n2];
+  visited1.add(n1);
+  visited2.add(n2);
+
+  while (queue1.length > 0 || queue2.length > 0) {
+    let check1 = queue1.shift();
+    let check2 = queue2.shift();
+
+    if (check1 === n2 || check2 === n1) {
+      return true;
+    }
+
+    if (check1 !== undefined) {
+      check1.outEdges.forEach(edge => {
+        if (!visited1.has(edge.toVertex)) {
+          queue1.push(edge.toVertex);
+          visited1.add(edge.toVertex);
+        }
+      });
+    }
+
+    if (check2 !== undefined) {
+      check2.outEdges.forEach(edge => {
+        if (!visited2.has(edge.toVertex)) {
+          queue2.push(edge.toVertex);
+          visited2.add(edge.toVertex);
+        }
+      });
+    }
+
+  }
+  return false;
+};
