@@ -74,3 +74,68 @@ def tape_equilibrium(arr):
         right_sum -= el
 
     return minimum
+
+def missing_integer(arr):
+    nums_inside = set()
+
+    for el in arr:
+        nums_inside.add(el)
+
+    # use pidgeonhole principle, if arr is length n, somewhere between
+    # 1 and n + 1 must be missing
+    for num in xrange(1, len(arr) + 2):
+        if num not in nums_inside:
+            return num
+
+    return -1
+
+def perm_check(arr):
+    nums_inside = set()
+
+    for num in arr:
+        if num in nums_inside:
+            return 0
+        else:
+            nums_inside.add(num)
+
+    for expected in xrange(1,len(arr) + 1):
+        if expected not in nums_inside:
+            return 0
+
+    return 1
+
+def frog_river_one(river_size, leaves):
+    needed = set()
+
+    for time, leaf_position in enumerate(leaves):
+        if leaf_position <= river_size:
+            needed.add(leaf_position)
+        if len(needed) == river_size:
+            return time
+
+    return -1
+
+# you can write to stdout for debugging purposes, e.g.
+# print "this is a debug message"
+
+def max_counters(num_counters, arr):
+    counters = [0] * num_counters
+    cur_max = 0
+    cur_min = 0
+
+    for pos in arr:
+        if pos == num_counters + 1:
+            cur_min = cur_max
+        else:
+            if counters[pos - 1] < cur_min:
+                counters[pos - 1] = cur_min + 1
+            else:
+                counters[pos - 1] += 1
+            if cur_max < counters[pos - 1]:
+                cur_max = counters[pos - 1]
+
+    for idx, el in enumerate(counters):
+        if el < cur_min:
+            counters[idx] = cur_min
+
+    return counters
