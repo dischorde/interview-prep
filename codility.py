@@ -126,16 +126,11 @@ def max_counters(num_counters, arr):
     for pos in arr:
         if pos == num_counters + 1:
             cur_min = cur_max
-        else:
-            if counters[pos - 1] < cur_min:
-                counters[pos - 1] = cur_min + 1
-            else:
-                counters[pos - 1] += 1
-            if cur_max < counters[pos - 1]:
-                cur_max = counters[pos - 1]
+            continue
+        counters[pos - 1] = max(counters[pos - 1], cur_min) + 1
+        cur_max = max(cur_max, counters[pos - 1])
 
-    for idx, el in enumerate(counters):
-        if el < cur_min:
-            counters[idx] = cur_min
+    for idx in xrange(num_counters):
+        counters[idx] = max(counters[idx], cur_min)
 
     return counters
