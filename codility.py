@@ -1,9 +1,6 @@
 def demo_equi(arr):
-    right_sum = 0
+    right_sum = sum(arr)
     left_sum = 0
-
-    for el in arr:
-        right_sum += el
 
     for idx, el in enumerate(arr):
         right_sum -= el
@@ -60,11 +57,8 @@ def frog_jumps(starting_point, destination, jump_distance):
 
 def tape_equilibrium(arr):
     left_sum = 0
-    right_sum = 0
+    right_sum = sum(arr)
     minimum = None
-
-    for el in arr:
-        right_sum += el
 
     for idx, el in enumerate(arr):
         current_difference = abs(right_sum - left_sum)
@@ -134,3 +128,25 @@ def max_counters(num_counters, arr):
         counters[idx] = max(counters[idx], cur_min)
 
     return counters
+
+def count_div(interval_start, interval_end, k):
+    # if the interval divides evenly, answer is number of chunks of k
+    # in the interval, plus 1 for interval_start itself
+    if interval_start % k == 0:
+        return ((interval_end - interval_start) // k) + 1
+    # if not, it is the number of chunks of k from the last number
+    # divisible by k, not including that number
+    else:
+        last_divisible = interval_start - (interval_start % k)
+        return (interval_end - last_divisible) // k
+
+def passing_cars(road):
+    num_pairs = 0
+    num_west = 0
+
+    for idx in reversed(xrange(len(road))):
+        if num_pairs > 1000000000: return -1
+        elif road[idx] == 1: num_west += 1
+        else: num_pairs += num_west
+
+    return num_pairs
