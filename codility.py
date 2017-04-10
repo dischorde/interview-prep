@@ -150,3 +150,78 @@ def passing_cars(road):
         else: num_pairs += num_west
 
     return num_pairs
+
+def dna_string_nm(dna_string, start_indicies, end_indicies):
+    results = []
+    for idx in xrange(len(start_indicies)):
+        start = start_indicies[idx]
+        end = end_indicies[idx]
+        results.append(find_min(dna_string, start, end))
+    return results
+
+def find_min(dna_string, start, end):
+    min = 5
+    for idx in xrange(start,end + 1):
+        letter = dna_string[idx]
+        if letter == "A" and min > 1:
+            min = 1
+        if letter == "C" and min > 2:
+            min = 2
+        if letter == "G" and min > 3:
+            min = 3
+        if letter == "T" and min > 4:
+            min = 4
+    return min
+
+def genomic_range(dna_string, start_indicies, end_indicies):
+    a, c, g = prefix_dna_counts(dna_string)
+    results = []
+
+    for idx in xrange(len(start_indicies)):
+        start = start_indicies[idx]
+        end = end_indicies[idx] + 1
+        if a[end] - a[start] > 0:
+            results.append(1)
+        elif c[end] - c[start] > 0:
+            results.append(2)
+        elif g[end] - g[start] > 0:
+            results.append(3)
+        else:
+            results.append(4)
+
+    return results
+
+def prefix_dna_counts(dna_string):
+    a = [0] * (len(dna_string) + 1)
+    c = [0] * (len(dna_string) + 1)
+    g = [0] * (len(dna_string) + 1)
+
+    for idx, letter in enumerate(dna_string):
+        idx += 1
+        a[idx] = a[idx - 1]
+        c[idx] = c[idx - 1]
+        g[idx] = g[idx - 1]
+        if letter == "A": a[idx] += 1
+        elif letter == "C": c[idx] += 1
+        elif letter == "G": g[idx] += 1
+
+    return [a, c, g]
+
+def min_avg_two_slice(arr):
+    min_idx = None
+    min_value = None
+
+    for idx in xrange(0, len(arr) - 1):
+        check_two = (arr[idx] + arr[idx + 1]) / 2.0
+        if min_value == None or check_two < min_value:
+            min_idx = idx
+            min_value = check_two
+
+        if idx > len(arr) - 3: continue
+
+        check_three = (arr[idx] + arr[idx + 1] + arr[idx + 2]) / 3.0
+        if check_three < min_value:
+            min_idx = idx
+            min_value = check_three
+
+    return min_idx
