@@ -225,3 +225,64 @@ def min_avg_two_slice(arr):
             min_value = check_three
 
     return min_idx
+
+
+def distinct(arr):
+    # its a "sorting" question, but I could use a set for better big O
+    uniq_ints = set()
+    for num in arr:
+        uniq_ints.add(num)
+
+    return len(uniq_ints)
+
+def disc_intersections(discs):
+    disc_coords = []
+    for center, radius in enumerate(discs):
+        disc_coords += [(center - radius, True), (center + radius, False)]
+
+    disc_coords.sort(key=lambda t: (t[0], not t[1]))
+
+    intersecting = 0
+    present_discs = 0
+
+    for pos, starting in disc_coords:
+        if starting:
+            intersecting += present_discs
+            present_discs += 1
+        else:
+            present_discs -= 1
+
+    if intersecting > 10000000: return -1
+
+    return intersecting
+
+def triange(arr):
+    if len(arr) < 3: return 0
+
+    sorted_arr = sorted(arr)
+    for idx in reversed(xrange(2,len(arr))):
+        if sorted_arr[idx - 1] + sorted_arr[idx - 2] > sorted_arr[idx]:
+            return 1
+
+    return 0
+
+def max_prod_of_three(arr):
+    max_three = arr[:3]
+    min_two = arr[:2]
+
+    for idx in xrange(2,len(arr)):
+        min_max = min(max_three)
+        max_min = max(min_two)
+
+        if idx > 2 and arr[idx] > min_max:
+            max_three.remove(min_max)
+            max_three.append(arr[idx])
+
+        if arr[idx] < max_min:
+            min_two.remove(max_min)
+            min_two.append(arr[idx])
+
+    option1 = reduce(lambda accum, el: accum * el, max_three)
+    option2 = reduce(lambda accum, el: accum * el, min_two) * max(max_three)
+
+    return option1 if option1 > option2 else option2
