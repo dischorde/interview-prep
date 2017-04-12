@@ -286,3 +286,10 @@ def max_prod_of_three(arr):
     option2 = reduce(lambda accum, el: accum * el, min_two) * max(max_three)
 
     return option1 if option1 > option2 else option2
+
+def golden_max_slice_sum(arr):
+    max_ending, max_slice = -1000000, -1000000
+    for el in arr:
+        max_ending = max(el, max_ending + el)
+        max_slice = max(max_slice, max_ending)
+    return max_slice
