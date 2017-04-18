@@ -1,11 +1,6 @@
-var fs = require('fs');
-var path = require('path');
+var filterModule = require('./make-it-modular.js');
 
-fs.readdir(process.argv[2], function (err, list) {
-  if (err) return console.error(err);
-  for (var fileName of list) {
-    if (path.extname(fileName) === `.${process.argv[3]}`) {
-      console.log(fileName);
-    }
-  }
+filterModule(process.argv[2], process.argv[3], function(err, fileName) {
+  if (err) console.error(err);
+  else console.log(fileName);
 });
